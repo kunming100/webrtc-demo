@@ -1,4 +1,4 @@
-const { resolve } = require("path");
+const { resolve, join } = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
@@ -13,7 +13,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/,
+        test: /\.(css|less)$/,
         exclude: resolve(__dirname, "node_modules"),
         use: [
           MiniCssExtractPlugin.loader,
@@ -26,10 +26,11 @@ module.exports = {
               },
             },
           },
+          "less-loader",
         ],
       },
       {
-        test: /\.m?js$/,
+        test: /.(js|jsx|ts|tsx)$/,
         exclude: resolve(__dirname, "node_modules"),
         use: "babel-loader",
       },
@@ -57,4 +58,10 @@ module.exports = {
       chunkFilename: "[id].css",
     }),
   ],
+  resolve: {
+    extensions: [".js", ".tsx", ".ts"],
+    alias: {
+      "@": join(__dirname, "../src"),
+    },
+  },
 };
