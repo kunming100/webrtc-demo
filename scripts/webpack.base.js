@@ -2,6 +2,8 @@ const { resolve, join } = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const isDev = process.env.NODE_ENV === "development";
+
 module.exports = {
   entry: resolve(__dirname, "../src/main.js"),
   output: {
@@ -16,7 +18,8 @@ module.exports = {
         test: /\.(css|less)$/,
         exclude: resolve(__dirname, "node_modules"),
         use: [
-          MiniCssExtractPlugin.loader,
+          // 开发环境使用style-loader，打包模式抽离css
+          isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
           "css-loader",
           {
             loader: "postcss-loader",
@@ -53,13 +56,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: resolve(__dirname, "../public/index.html"),
     }),
-    new MiniCssExtractPlugin({
-      filename: "[name].[hash:8].css",
-      chunkFilename: "[id].css",
-    }),
   ],
   resolve: {
-    extensions: [".js", ".tsx", ".ts"],
+    extensions: [".jsx", ".js", ".tsx", ".ts"],
     alias: {
       "@": join(__dirname, "../src"),
     },
