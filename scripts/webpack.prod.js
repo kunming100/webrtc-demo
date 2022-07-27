@@ -9,7 +9,7 @@ module.exports = merge(baseConfig, {
   plugins: [
     // 抽离css
     new MiniCssExtractPlugin({
-      filename: "styles/[name].[hash:8].css",
+      filename: "./styles/[name].[hash:8].css",
       // chunkFilename: "[id].css",
     }),
     // 复制文件插件

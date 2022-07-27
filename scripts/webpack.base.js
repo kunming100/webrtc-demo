@@ -19,7 +19,7 @@ module.exports = {
         exclude: resolve(__dirname, "node_modules"),
         use: [
           // 开发环境使用style-loader，打包模式抽离css
-          isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+          isDev ? "style-loader" : MiniCssExtractPlugin.loader,
           "css-loader",
           {
             loader: "postcss-loader",

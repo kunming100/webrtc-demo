@@ -1,0 +1,55 @@
+.webrtc-cmp {
+  padding: .2rem;
+
+  .not-support {
+    font-size: .3rem;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  #local-stream,
+  #remote-stream {
+    width: 3.35rem;
+    height: 1.89rem;
+  }
+
+  .stream-box {
+    margin-bottom: .2rem;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .stream-title {
+    font-size: .2rem;
+    line-height: .3rem;
+  }
+}
+
+.operate-area {
+  position: fixed;
+  left: 0;
+  bottom: env(safe-area-inset-bottom);
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  padding: 0.2rem;
+  box-sizing: border-box;
+
+  .call-btn,
+  .join-btn,
+  .hang-up-btn {
+    width: 1rem;
+    height: 0.4rem;
+    line-height: 0.4rem;
+    text-align: center;
+    background-color: #2193ff;
+    color: #fff;
+    font-size: 0.16rem;
+
+    &.disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+  }
+}
