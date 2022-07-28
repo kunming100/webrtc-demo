@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import cls from "classnames";
 import { io, Socket } from "socket.io-client";
 import { parse, changeUrlArg } from "@/utils/query-string";
+import { getUserInfo } from "@/api/user";
 import "./app.less";
 
 // 音视频通话状态
@@ -44,27 +45,10 @@ enum SOCKET_COMMAND {
   FULL = "full",
 }
 
-interface SDPMessage {
-  type: "offer" | "answer";
-  desc: RTCSessionDescription;
+interface UserInfo {
+  name: string;
+  id: string;
 }
-
-// MOCK数据
-// 用户
-const USERS = [
-  {
-    id: "382437913343",
-    name: "张三",
-  },
-  {
-    id: "894891429342",
-    name: "李四",
-  },
-  {
-    id: "972468303473",
-    name: "王五",
-  },
-];
 
 const mediaStreamConstraints = {
   video: {
@@ -99,6 +83,7 @@ const peerConnectMap = new Map<string, RTCPeerConnection>();
 function App() {
   const query = parse(window.location.href);
   const [isSupport, setIsSupport] = useState<boolean>(true);
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   // 房间ID
   const [roomId, setRoomId] = useState<string>(query.room || "");
   const [isRoomowner, setIsRoomowner] = useState<boolean>(!roomId);
@@ -110,10 +95,6 @@ function App() {
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
   const localRef = useRef<HTMLVideoElement | null>(null);
   const remoteRef = useRef<HTMLVideoElement | null>(null);
-
-  useEffect(() => {
-    setIsRoomowner(!roomId || roomId === socket?.id);
-  }, [roomId]);
 
   useEffect(() => {
     checkDevices();
@@ -143,6 +124,20 @@ function App() {
       remoteRef.current &&
       (remoteRef.current.srcObject = remoteStream);
   }, [remoteStream]);
+
+  useEffect(() => {
+    getUserInfo<UserInfo>(query.userId)
+      .then((userInfo) => {
+        setUserInfo(userInfo);
+      })
+      .catch((err) => {
+        console.warn(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    setIsRoomowner(!roomId || roomId === socket?.id);
+  }, [roomId]);
 
   // 发起视频
   const handleCall = async () => {
@@ -572,7 +567,7 @@ function App() {
       ) : (
         <>
           <div className='stream-box'>
-            <p className='stream-title'>本端</p>
+            <p className='stream-title'>本端：{userInfo?.name}</p>
             {localStream && (
               <video ref={localRef} id='local-stream' autoPlay playsInline />
             )}

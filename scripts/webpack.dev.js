@@ -15,6 +15,13 @@ module.exports = merge(baseConfig, {
     static: {
       directory: path.join(__dirname, "../public"), //托管静态资源public文件夹
     },
+    proxy: {
+      "/api": {
+        target: "http://localhost:3010",
+        pathRewrite: { api: "api" },
+        changeOrigin: true,
+      },
+    },
   },
   plugins: [
     new ReactRefreshWebpackPlugin(), // 添加热更新插件
