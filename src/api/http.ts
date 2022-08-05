@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = process.env.NODE_ENV === "production" ? "" : "/api";
+const baseURL = process.env.NODE_ENV === "production" ? "https://tankscode.cn/api" : "/api";
 
 const request = axios.create({
   baseURL,
