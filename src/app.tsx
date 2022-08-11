@@ -170,8 +170,8 @@ function App() {
     if (socket) return;
     const localStream = await getLocalStream();
     if (!localStream) return;
-    // socket = io("http://localhost:3010", { auth: { userId: query.userId } });
-    socket = io("https://tankscode.cn:3010", { auth: { userId: query.userId } });
+    socket = io("http://localhost:3010", { auth: { userId: query.userId } });
+    // socket = io("https://tankscode.cn:3010", { auth: { userId: query.userId } });
     // 连接上服务端的socketio时会自动创建一个以socket.id为id的房间
     socket.connect();
     // 监听socketio的命令
